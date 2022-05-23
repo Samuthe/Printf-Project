@@ -1,10 +1,11 @@
-#include "holberton.h"
+#include "main.h"
+#include <stdlib.h>
 
 /**
-* printf_HEX - prints an hexgecimal number.
-* @val: arguments.
-* Return: counter.
-*/
+ * printf_HEX - prints an hexgecimal number.
+ * @val: arguments.
+ * Return: counter.
+ */
 int printf_HEX(va_list val)
 {
 int i;
@@ -19,7 +20,8 @@ num /= 16;
 counter++;
 }
 counter++;
-array = malloc(counter * sizeof(int));
+
+array = malloc (counter * sizeof(int));
 
 for (i = 0; i < counter; i++)
 {
