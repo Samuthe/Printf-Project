@@ -1,49 +1,82 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef _GLOBAL_DEFINITIONS_H
+#define _GLOBAL_DEFINITIONS_H
 
-#include <stdio.h>
-/*#include <stdlib.h>*/
+/* #include "global_definitions.h" */
+
+#endif
+
+#ifndef STDLIB_H
+#define STDLIB_H
+
+#include <stdlib.h>
+
+#endif
+
+#ifndef STDARG_H
+#define STDARG_H
+
 #include <stdarg.h>
-/*#include <limits.h>*/
-#include <unistd.h>
 
+#endif
 
+#ifndef _MAIN_H
+#define _MAIN_H
 
 /**
- * struct format - match the conversion specifiers for printf
- * @id: type char pointer of the specifier i.e (l, h) for (d, i, u, o, x, X)
- * @f: type pointer to function for the conversion specifier
- *
+ * struct print_buffer - structer for the write buffer.
+ * @index: current index of the buffer.
+ * @size: size of the buffer.
+ * @overflow: this recoreds the overflow.
+ * @str: pointer to memory that contains the content for this buffer.
  */
-
-typedef struct format
+typedef struct print_buffer
 {
-	char *id;
-	int (*f)();
-} convert_match;
+	size_t index;
+	size_t size;
+	size_t overflow;
+	char *str;
+} buffer;
 
-int printf_pointer(va_list val);
-int printf_hex_aux(unsigned long int num);
-int printf_HEX_aux(unsigned int num);
-int printf_exclusive_string(va_list val);
-int printf_HEX(va_list val);
-int printf_hex(va_list val);
-int printf_oct(va_list val);
-int printf_unsigned(va_list args);
-int printf_bin(va_list val);
-int printf_srev(va_list args);
-int printf_rot13(va_list args);
-int printf_int(va_list args);
-int printf_dec(va_list args);
-int _strlen(char *s);
-int *_strcpy(char *dest, char *src);
-int _strlenc(const char *s);
-int rev_string(char *s);
-int _strlenc(const char *s);
-int printf_37(void);
-int printf_char(va_list val);
-int printf_string(va_list val);
-int _putchar(char c);
+buffer *buf_new();
+buffer *buf_custom(size_t);
+size_t buf_size(buffer *);
+size_t buf_index(buffer *);
+char *buf_content(buffer *);
+void buf_write(buffer *);
+void buf_end(buffer *);
+void buf_wr(buffer *);
+void buf_inc(buffer *);
+
+/**
+ * struct print_ops - struct for the write operators.
+ * @op: hold a symbol that represents the operator.
+ * @fn: pointer function to the write functions.
+ */
+typedef struct print_ops
+{
+	char *op;
+	int (*fn)(buffer *, va_list);
+} prtOp;
+
+prtOp *prtOp_init();
+
+void append_num(buffer *buf, unsigned int num);
+
+int write_bin(buffer *buf, va_list v_ls);
+
+/* Martin Above / Samie Below */
+
 int _printf(const char *format, ...);
 
+int opid(buffer *buf, va_list v_ls, const char *src, int src_i);
+
+int write_char(buffer *buf, va_list v_ls);
+
+int write_str(buffer *buf, va_list v_ls);
+
+int write_mod(buffer *buf, va_list v_ls);
+
+int write_int(buffer *buf, va_list v_ls);
+
+char *itoc(int num, char *dest);
 #endif
